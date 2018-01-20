@@ -12,5 +12,3 @@
 	<?php wp_head(); ?>
 </head>
 <body itemscope itemtype="http://schema.org/WebPage">
-	<header>
-	</header>
