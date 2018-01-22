@@ -12,3 +12,10 @@ function enqueue_scripts () {
     wp_enqueue_script('uikit');
 }
 add_action('wp_enqueue_scripts', 'enqueue_scripts');
+
+// WP-postrating use PNG images instead of GIF images
+function custom_rating_image_extension() {
+    return 'png';
+}
+add_filter( 'wp_postratings_image_extension', 'custom_rating_image_extension' );
+
