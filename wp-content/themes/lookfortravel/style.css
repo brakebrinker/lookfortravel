@@ -1,6 +1,10 @@
 iframe {
     max-width: 100% !important;
 }
+.video iframe {
+    width: 100%;
+    height: 687px;
+}
 .post-ratings {
     text-align: center;
 }
