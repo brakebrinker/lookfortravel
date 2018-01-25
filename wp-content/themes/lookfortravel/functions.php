@@ -19,3 +19,6 @@ function custom_rating_image_extension() {
 }
 add_filter( 'wp_postratings_image_extension', 'custom_rating_image_extension' );
 
+// theme content file require
+require get_parent_theme_file_path( '/theme-functions.php' );
+
