@@ -7,6 +7,7 @@
     $blog_object_type = 'blog_object_type';
     $blog_subcontent_video = get_field('blog_video_text');
     $blog_subcontent_photo = get_field('blog_photo_text');
+    $blog_images = get_field('blog_photo_gallery');
     ?>
     <?php if ( $blog_type === 'text') { ?>
 
@@ -115,9 +116,7 @@
                         <?php echo $blog_subcontent_video; ?>
                 </div>
                 <div class="uk-position-bottom-left next-prev uk-visible@l">
-                    <a href="">
-                        <?php echo get_previous_post_link( '%link', '<span><i class="fa fa-angle-left"></i> Предыдущая запись </span><br><span class="title">%title</span>', 1 ); ?>
-                    </a>
+                    <?php echo get_previous_post_link( '%link', '<span><i class="fa fa-angle-left"></i> Предыдущая запись </span><br><span class="title">%title</span>', 1 ); ?>
                 </div>
                 <div class="uk-position-bottom-right next-prev uk-text-right uk-visible@l">
                     <?php echo get_next_post_link( '%link', '<span>Следующая запись <i class="fa fa-angle-right"></i></span><br><span class="title">%title</span>', 1 ); ?>
@@ -161,44 +160,17 @@
             </div>
 
             <div class="uk-margin-large" itemprop="sharedContent">
+                <?php 
+
+                if( $blog_images ): ?>
                 <div class="gallery" uk-lightbox>
-                    <a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-                        <img src="assets/images/sample/gallery/01_th.jpg" alt="название">
-                    </a>
-                    <a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-                        <img src="assets/images/sample/gallery/02_th.jpg" alt="название">
-                    </a>
-                    <a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-                        <img src="assets/images/sample/gallery/03_th.jpg" alt="название">
-                    </a>
-                    <a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-                        <img src="assets/images/sample/gallery/04_th.jpg" alt="название">
-                    </a>
-                    <a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-                        <img src="assets/images/sample/gallery/05_th.jpg" alt="название">
-                    </a>
-                    <a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-                        <img src="assets/images/sample/gallery/06_th.jpg" alt="название">
-                    </a>
-                    <a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-                        <img src="assets/images/sample/gallery/07_th.jpg" alt="название">
-                    </a>
-                    <a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-                        <img src="assets/images/sample/gallery/08_th.jpg" alt="название">
-                    </a>
-                    <a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-                        <img src="assets/images/sample/gallery/09_th.jpg" alt="название">
-                    </a>
-                    <a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-                        <img src="assets/images/sample/gallery/10_th.jpg" alt="название">
-                    </a>
-                    <a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-                        <img src="assets/images/sample/gallery/11_th.jpg" alt="название">
-                    </a>
-                    <a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-                        <img src="assets/images/sample/gallery/12_th.jpg" alt="название">
-                    </a>
+                    <?php foreach( $blog_images as $blog_image ): ?>
+                        <a href="<?php echo $blog_image['url']; ?>" data-caption="<?php if ($blog_image['caption']) echo $blog_image['caption']; else echo "Caption"; ?>">
+                            <img src="<?php echo $blog_image['sizes']['medium_large']; ?>" alt="<?php if ($blog_image['alt']) echo $blog_image['alt']; else the_title(); ?>">
+                        </a>
+                    <?php endforeach; ?>
                 </div>
+                <?php endif; ?>
             </div>
 
             <div class="uk-container uk-container-small">
@@ -208,18 +180,7 @@
             <div class="uk-container uk-margin-large-top uk-position-relative">
                 <div class="rate-step" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
                     <h2>Оцените статью</h2>
-                    <div class="star-rating">
-                        <input class="star-rating-input" id="star-rating-5" type="radio" name="rating" value="5">
-                        <label class="star-rating-ico fa fa-star-o" for="star-rating-5" title="5 out of 5 stars"></label>
-                        <input class="star-rating-input" id="star-rating-4" type="radio" name="rating" value="4" checked>
-                        <label class="star-rating-ico fa fa-star-o" for="star-rating-4" title="4 out of 5 stars"></label>
-                        <input class="star-rating-input" id="star-rating-3" type="radio" name="rating" value="3">
-                        <label class="star-rating-ico fa fa-star-o" for="star-rating-3" title="3 out of 5 stars"></label>
-                        <input class="star-rating-input" id="star-rating-2" type="radio" name="rating" value="2">
-                        <label class="star-rating-ico fa fa-star-o" for="star-rating-2" title="2 out of 5 stars"></label>
-                        <input class="star-rating-input" id="star-rating-1" type="radio" name="rating" value="1">
-                        <label class="star-rating-ico fa fa-star-o" for="star-rating-1" title="1 out of 5 stars"></label>
-                    </div>
+                    <?php if(function_exists('the_ratings')) { the_ratings(); } ?>
                     <meta itemprop="ratingValue" content="4.5">
                     <meta itemprop="reviewCount" content="11">
                 </div>
@@ -243,38 +204,24 @@
                 </div>
 
                 <div class="uk-position-top-left next-prev uk-visible@l">
-                    <a href="">
-                        <span><i class="fa fa-angle-left"></i> Предыдущая запись</span><br>
-                        <span class="title">Разноцветный Бангкок</span>
-                    </a>
+                    <?php echo get_previous_post_link( '%link', '<span><i class="fa fa-angle-left"></i> Предыдущая запись </span><br><span class="title">%title</span>', 1 ); ?>
                 </div>
                 <div class="uk-position-top-right next-prev uk-text-right uk-visible@l">
-                    <a href="">
-                        <span>Следующая запись <i class="fa fa-angle-right"></i></span><br>
-                        <span class="title">Нячанг-Винперл-Далат-Муйне</span>
-                    </a>
+                    <?php echo get_next_post_link( '%link', '<span>Следующая запись <i class="fa fa-angle-right"></i></span><br><span class="title">%title</span>', 1 ); ?>
                 </div>
 
                 <div class="uk-child-width-expand uk-hidden@l" uk-grid>
                     <div class="next-prev">
-                        <a href="">
-                            <span><i class="fa fa-angle-left"></i> Предыдущая запись</span><br>
-                            <span class="title">Разноцветный Бангкок</span>
-                        </a>
+                        <?php echo get_previous_post_link( '%link', '<span><i class="fa fa-angle-left"></i> Предыдущая запись </span><br><span class="title">%title</span>', 1 ); ?>
                     </div>
                     <div class="next-prev uk-text-right">
-                        <a href="">
-                            <span>Следующая запись <i class="fa fa-angle-right"></i></span><br>
-                            <span class="title">Нячанг-Винперл-Далат-Муйне</span>
-                        </a>
+                        <?php echo get_next_post_link( '%link', '<span>Следующая запись <i class="fa fa-angle-right"></i></span><br><span class="title">%title</span>', 1 ); ?>
                     </div>
                 </div>
-                
+
                 <h2>Метки</h2>
                 <div class="uk-flex-center uk-grid uk-grid-small" itemprop="keywords">
-                    <a href="">Средиземное море</a>
-                    <a href="">Кафе</a>
-                    <a href="">Еда</a>
+                    <?php the_tags('', ''); ?>
                 </div>
 
             </div>
