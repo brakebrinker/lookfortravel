@@ -9,6 +9,15 @@ function get_post_recommendet($item_recommendet) {
     }
 }
 
+// Recommended blog
+function get_post_blog_recommendet($item_recommendet) {
+    if ($item_recommendet === 'recomended') {
+        echo '<div class="uk-text-center uk-alert-success">Рекомендовано к посещению</div>';
+    } elseif ($item_recommendet === 'beshure') {
+        echo '<div class="uk-text-center uk-alert-danger">Обязательно к посещению</div>';
+    }
+}
+
 // Get Post object type
 function get_post_object_type($name_field) {
     if( have_rows($name_field) ) {
@@ -53,9 +62,6 @@ function get_post_blog_object_type($name_field) {
     }
     if ($image_blog_object_name && $image_blog_object_img) {
         echo "
-        <div class=\"uk-margin-small-bottom\">
-        <img class=\"uk-margin-small-left\" src=\"$image_blog_object_img\" alt=\"the_title()\">$image_blog_object_name
-        </div>";
+        <div> <img class=\"uk-margin-small-left\" src=\"$image_blog_object_img\" alt=\"the_title()\"> $image_blog_object_name</div>";
     }
-	//						<div class="uk-text-center uk-alert-danger">Обязательно к посещению</div>
 }

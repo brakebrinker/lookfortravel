@@ -8,3 +8,15 @@ iframe {
 .post-ratings {
     text-align: center;
 }
+.uk-light .custom-logo-link, .uk-light .custom-logo-link:focus, .uk-light .custom-logo-link:hover, .uk-overlay-primary .custom-logo-link, .uk-overlay-primary .custom-logo-link:focus, .uk-overlay-primary .custom-logo-link:hover, .uk-section-primary:not(.uk-preserve-color) .custom-logo-link, .uk-section-primary:not(.uk-preserve-color) .custom-logo-link:focus, .uk-section-primary:not(.uk-preserve-color) .custom-logo-link:hover, .uk-section-secondary:not(.uk-preserve-color) .custom-logo-link, .uk-section-secondary:not(.uk-preserve-color) .custom-logo-link:focus, .uk-section-secondary:not(.uk-preserve-color) .custom-logo-link:hover {
+    color: #fff;
+}
+.custom-logo-link {
+    font-size: 1.5rem;
+    font-family: "PT Sans",Roboto,"Helvetica Neue",Arial,sans-serif;
+    color: #222;
+    text-decoration: none;
+}
+.section-header .custom-logo-link img {
+    width: 116px;
+}

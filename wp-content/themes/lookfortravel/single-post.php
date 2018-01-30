@@ -8,6 +8,8 @@
     $blog_subcontent_video = get_field('blog_video_text');
     $blog_subcontent_photo = get_field('blog_photo_text');
     $blog_images = get_field('blog_photo_gallery');
+
+    $post_type = get_post_type();
     ?>
     <?php if ( $blog_type === 'text') { ?>
 
@@ -58,7 +60,7 @@
                 <?php get_template_part( 'templates/nav', 'top' ); ?>
                 <div class="middle uk-flex-1 uk-text-center">
                     <div class="badge">
-                        <a class="uk-badge" href="">Блог</a>
+                        <a class="uk-badge" href="<?php echo get_post_type_archive_link( $post_type ); ?>">Блог</a>
                     </div>
                     <h1 class   ="regular" itemprop="name"><?php the_title(); ?></h1>
                 </div>
@@ -145,7 +147,7 @@
 
                 <div class="middle uk-flex-1 uk-text-center">
                     <div class="badge">
-                        <a class="uk-badge" href="">Блог</a>
+                        <a class="uk-badge" href="<?php echo get_post_type_archive_link( $post_type ); ?>">Блог</a>
                     </div>
                     <h1 class="regular" itemprop="name"><?php the_title(); ?></h1>
                 </div>
@@ -233,7 +235,7 @@
 
                 <div class="middle uk-flex-1 uk-text-center">
                     <div class="badge">
-                        <a class="uk-badge" href="">Блог</a>
+                        <a class="uk-badge" href="<?php echo get_post_type_archive_link( $post_type ); ?>">Блог</a>
                     </div>
                     <h1 class="regular" itemprop="name"><?php the_title(); ?></h1>
                 </div>

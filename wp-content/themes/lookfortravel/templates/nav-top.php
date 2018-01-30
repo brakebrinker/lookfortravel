@@ -1,9 +1,11 @@
 <nav class="navigation uk-flex-none">
     <div class="uk-flex-middle uk-margin-small" uk-grid>
         <div class="uk-width-1-2 uk-width-1-5@l">
-            <a href="" class="uk-logo">
-                <img src="assets/images/logo.png" alt="Look for Travel">
-            </a>
+            <?php 
+            if( has_custom_logo( $blog_id ) ){
+                echo get_custom_logo( $blog_id );
+            }
+            ?>
         </div>
         <div class="uk-width-1-2 uk-width-3-5@l">
             <div class="uk-hidden@l uk-text-right">
