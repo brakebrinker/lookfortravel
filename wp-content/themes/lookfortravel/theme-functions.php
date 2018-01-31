@@ -65,3 +65,70 @@ function get_post_blog_object_type($name_field) {
         <div> <img class=\"uk-margin-small-left\" src=\"$image_blog_object_img\" alt=\"the_title()\"> $image_blog_object_name</div>";
     }
 }
+//Button loadmore
+function true_load_posts(){
+ 
+	$args = unserialize( stripslashes( $_POST['query'] ) );
+	$args['paged'] = $_POST['page'] + 1; // следующая страница
+	$args['post_status'] = 'publish';
+ 
+	// обычно лучше использовать WP_Query, но не здесь
+	query_posts( $args );
+	// если посты есть
+	if( have_posts() ) :
+ 
+		// запускаем цикл
+		while( have_posts() ): the_post();
+
+			get_template_part( 'templates/post', 'preview' );
+ 
+		endwhile;
+ 
+	endif;
+	die();
+}
+ 
+add_action('wp_ajax_loadmore', 'true_load_posts');
+add_action('wp_ajax_nopriv_loadmore', 'true_load_posts');
+
+// фильтрация постов пока не используется
+function filter_posts(){
+    $s_query = trim(stripslashes( $_GET['search'] ));
+    
+    $args = array(
+        'post_type' => 'post',
+        'post_status' => 'publish',
+        's' => $s_query
+    );
+    $query = new WP_Query( $args );
+    ob_start();
+
+	if ( $query->have_posts() ) : ?>
+    <div class="section-cards uk-section">
+        <div id="posts-results" class="uk-child-width-1-2@s uk-child-width-1-3@l" uk-grid>
+        <?php while ( $query->have_posts() ) : $query->the_post(); 
+            get_template_part( 'templates/post', 'preview' );
+        ?>
+        <?php endwhile; ?>
+        </div>
+    </div>
+    <?php if (  $query->max_num_pages > 1 ) : ?>
+    <script>
+        var true_posts = '<?php echo serialize($query->query_vars); ?>';
+        var current_page = <?php echo (get_query_var('paged')) ? get_query_var('paged') : 1; ?>;
+        var max_pages = '<?php echo $query->max_num_pages; ?>';
+    </script>
+    <div id="true_loadmore" class="uk-margin-large-bottom uk-text-center"><button class="uk-button uk-button-default">Еще</button></div>
+    <?php endif; ?>
+    <?php else: ?>
+    <div class="section-cards uk-section">
+        <div class="uk-child-width-1-2@s uk-child-width-1-3@l" uk-grid>
+            Публикаций не найдено.
+        </div>
+    </div>
+    <?php endif;
+	die();
+}
+ 
+add_action('wp_ajax_posts-search', 'filter_posts');
+add_action('wp_ajax_nopriv_posts-search', 'filter_posts');

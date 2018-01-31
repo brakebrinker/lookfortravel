@@ -10,26 +10,29 @@ $tag_img = get_field('taxonomy_term_img', $taxonomy . '_' . get_queried_object_i
 <main class="section-main">
 	<div class="uk-container uk-margin-small-top">
         
-		<form class="section-filters uk-clearfix">
-			<input type="text" class="uk-input uk-form-width-medium" placeholder="Уточнить место">
+		<form id="posts-filter" class="section-filters uk-clearfix" method="get">
+			<input type="text" name="s" class="uk-input uk-form-width-medium" placeholder="Уточнить место" value="<?php if(!empty($_GET['s'])){echo $_GET['s'];}?>">
+			<span class="status-query"></span>
 		</form>
-        <?php if ( have_posts() ) : ?>
-		<div class="section-cards uk-section">
-			<div id="posts-results" class="uk-child-width-1-2@s uk-child-width-1-3@l" uk-grid>
-            <?php while ( have_posts() ) : the_post(); 
-				get_template_part( 'templates/post', 'preview' );
-            ?>
-			<?php endwhile; ?>
+		<?php if ( have_posts() ) : ?>
+		<div id="search-posts-results">
+			<div class="section-cards uk-section">
+				<div id="posts-results" class="uk-child-width-1-2@s uk-child-width-1-3@l" uk-grid>
+				<?php while ( have_posts() ) : the_post(); 
+					get_template_part( 'templates/post', 'preview' );
+				?>
+				<?php endwhile; ?>
+				</div>
 			</div>
-		</div>
 
-        <?php if (  $wp_query->max_num_pages > 1 ) : ?>
-			<?php get_template_part( 'templates/show', 'more' ); ?>
-		<?php endif; ?>
-        <?php else: ?>
-        <div class="section-cards uk-section">
-			<div class="uk-child-width-1-2@s uk-child-width-1-3@l" uk-grid>
-                Статей не найдено.
+			<?php if (  $wp_query->max_num_pages > 1 ) : ?>
+				<?php get_template_part( 'templates/show', 'more' ); ?>
+			<?php endif; ?>
+			<?php else: ?>
+			<div class="section-cards uk-section">
+				<div class="uk-child-width-1-2@s uk-child-width-1-3@l" uk-grid>
+					Публикаций не найдено.
+				</div>
 			</div>
 		</div>
         <?php endif; ?>

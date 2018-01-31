@@ -1,5 +1,5 @@
 jQuery(function($){
-	$('#true_loadmore button').click(function(){
+	$('#search-posts-results').on('click', 'button', function(){
 		$(this).text('Загрузка...'); // изменяем текст кнопки, вы также можете добавить прелоадер
 		var data = {
 			'action': 'loadmore',
@@ -22,4 +22,30 @@ jQuery(function($){
 			}
 		});
 	});
+
+	// !!!!!!!пока не используется -- поиск по публикациям 
+	// $('#posts-filter input[type="text"]').on('input keyup', _.debounce(function (){
+	// 	console.log('push');
+	// 	var srch = $(this).val();
+	// 	var data = {
+	// 		'action': 'posts-search',
+	// 		'search': srch
+	// 	};
+
+	// 	$('.status-query').text('Загрузка...');
+
+	// 	$.ajax({
+	// 		url:ajaxurl, // обработчик
+	// 		data:data, // данные
+	// 		type:'GET', // тип запроса
+	// 		success:function(data){
+	// 			if( data ) { 
+	// 				$('.status-query').text('');
+	// 				$('#search-posts-results').html(data); // вставляем новые посты
+	// 			} else {
+	// 				$('.status-query').text('Ошибка загрузки.');
+	// 			}
+	// 		}
+	// 	});
+	// }, 500));
 });
