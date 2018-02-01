@@ -1,5 +1,5 @@
 jQuery(function($){
-	$('#search-posts-results').on('click', 'button', function(){
+	$('.uk-container').on('click', '#true_loadmore button', function(){
 		$(this).text('Загрузка...'); // изменяем текст кнопки, вы также можете добавить прелоадер
 		var data = {
 			'action': 'loadmore',

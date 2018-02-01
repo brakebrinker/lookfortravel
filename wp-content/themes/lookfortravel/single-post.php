@@ -62,11 +62,11 @@
                     <div class="badge">
                         <a class="uk-badge" href="<?php echo get_post_type_archive_link( $post_type ); ?>">Блог</a>
                     </div>
-                    <h1 class   ="regular" itemprop="name"><?php the_title(); ?></h1>
+                    <h1 class="regular" itemprop="name"><?php the_title(); ?></h1>
                 </div>
                 <div class="bottom uk-position-relative">
                     <div class="meta uk-text-center"><span itemprop="author"><?php the_author(); ?></span>, <?php the_date(); ?></span></div>
-                    <meta itemprop="datePublished" content="<?php the_date(); ?>">
+                    <meta itemprop="datePublished" content="<?php echo get_the_date('Y-m-d'); ?>">
                     <div class="geo-tags uk-position-bottom-left uk-visible@m">
                         <a class="uk-badge" href=""><i class="fa fa-map-marker uk-margin-small-right"></i> <span itemprop="contentLocation">Вьетнам, Аюттхая</span></a>
                     </div>

@@ -1,7 +1,7 @@
 <?php 
 $blog_type = get_field('blog_type', get_the_ID());
 $blog_recl_link = get_field('blog_reklama_link', get_the_ID());
-$blog_img = get_field('blog_img', get_the_ID());
+$blog_img = get_field('theme_img', get_the_ID());
 $blog_object_type = 'blog_object_type';
 $blog_status_recommendation = get_field('blog_status_recomendation', get_the_ID());
 ?>
@@ -16,7 +16,7 @@ $blog_status_recommendation = get_field('blog_status_recomendation', get_the_ID(
             <div class="overlay uk-position-cover">
                 <div class="place uk-text-small" itemprop="contentLocation">Таиланд, Аюттхая</div>
                 <div class="title uk-h4" itemprop="name"><?php the_title(); ?></div>
-                <time datetime="<?php echo get_the_date('Y-m-d'); ?>" class="uk-text-small"><?php the_date(); ?></time>
+                <time datetime="<?php echo get_the_date('Y-m-d'); ?>" class="uk-text-small"><?php echo get_the_date(); ?></time>
                 <meta itemprop="datePublished" content="<?php echo get_the_date('Y-m-d'); ?>">
                 <?php get_icon_for_posttype($blog_type); ?>
             </div>
