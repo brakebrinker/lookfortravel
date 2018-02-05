@@ -81,7 +81,7 @@ function true_load_posts(){
 		while( have_posts() ): the_post();
 
 			get_template_part( 'templates/post', 'preview' );
- 
+
 		endwhile;
  
 	endif;
@@ -132,3 +132,71 @@ function filter_posts(){
  
 add_action('wp_ajax_posts-search', 'filter_posts');
 add_action('wp_ajax_nopriv_posts-search', 'filter_posts');
+
+// фильтрация постов пока не используется
+function sort_posts(){
+    $sortkey = '';
+    $sortvalue = 'meta_value_num';
+
+    // $args = array();
+    $argSort = array();
+    // $args['meta_query'] = array('relation' => 'AND');
+    global $wp_query;
+    // global $query_string;
+
+    if (!empty($_GET['sort'])) {
+        if ($_GET['sort'] === 'sr_date') {
+            $sortvalue = 'date';
+        }
+
+        if ($_GET['sort'] === 'sr_alfb') {
+            $sortkey = 'company_term_do';
+        }
+
+        if ($_GET['sort'] === 'sr_rate') {
+            $sortkey = 'company_summ_do';
+        }
+    }
+
+    $argSort = array(
+        // 'post_type' => 'themes',
+        // 'post_status' => 'publish',
+        'meta_key' => $sortkey,
+        'orderby'  => $sortvalue,
+        'order'    => 'DESC'
+    );
+
+    // $query = new WP_Query( $argSort );
+    // ob_start();
+    query_posts(array_merge($argSort,$wp_query->query));
+
+    if ( have_posts() ) : ?>
+    <div class="section-cards uk-section">
+        <div id="posts-results" class="uk-child-width-1-2@s uk-child-width-1-3@l" uk-grid>
+        <?php while ( have_posts() ) : the_post(); 
+            get_template_part( 'templates/post', 'preview' );
+        ?>
+        <?php endwhile; ?>
+        </div>
+    </div>
+<!--     <?php if (  $query->max_num_pages > 1 ) : ?>
+    <script>
+        var true_posts = '<?php echo serialize($query->query_vars); ?>';
+        var current_page = <?php echo (get_query_var('paged')) ? get_query_var('paged') : 1; ?>;
+        var max_pages = '<?php echo $query->max_num_pages; ?>';
+    </script>
+    <div id="true_loadmore" class="uk-margin-large-bottom uk-text-center"><button class="uk-button uk-button-default">Еще</button></div>
+    <?php endif; ?> -->
+    <?php else: ?>
+    <div class="section-cards uk-section">
+        <div class="uk-child-width-1-2@s uk-child-width-1-3@l" uk-grid>
+            Публикаций не найдено.
+        </div>
+    </div>
+    <?php endif;
+
+    wp_die();
+}
+ 
+add_action('wp_ajax_posts-sort', 'sort_posts');
+add_action('wp_ajax_nopriv_posts-sort', 'sort_posts');

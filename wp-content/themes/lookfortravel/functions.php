@@ -8,6 +8,9 @@ function enqueue_styles() {
 add_action('wp_enqueue_scripts', 'enqueue_styles');
 
 function enqueue_scripts () {
+    wp_localize_script('jquery', 'lookfortravel', array(
+        'ajaxurl' => admin_url('admin-ajax.php'),
+    ));
     wp_register_script('main', get_template_directory_uri() . '/js/main.js');
     wp_enqueue_script('main');
     wp_register_script('uikit', get_template_directory_uri() . '/uikit/js/uikit.min.js');

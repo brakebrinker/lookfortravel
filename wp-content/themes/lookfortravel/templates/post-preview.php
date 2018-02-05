@@ -1,7 +1,7 @@
 <?php 
 $blog_type = get_field('blog_type', get_the_ID());
 $blog_recl_link = get_field('blog_reklama_link', get_the_ID());
-$blog_img = get_field('theme_img', get_the_ID());
+$blog_img = get_field('blog_img', get_the_ID());
 $blog_object_type = 'blog_object_type';
 $blog_status_recommendation = get_field('blog_status_recomendation', get_the_ID());
 ?>

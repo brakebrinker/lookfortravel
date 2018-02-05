@@ -1,6 +1,7 @@
 <?php get_header(); ?>
 <?php while ( have_posts() ) : the_post(); ?>
 <?php 
+
 $related_tags = wp_get_object_terms( get_the_ID(), 'theme_tag', array( 'fields' => 'ids' ) );
 $related_cats = array();
 $relatedd_cats = get_the_terms( get_the_ID(), 'theme_category' );

@@ -12,7 +12,7 @@ jQuery(function($){
 			type:'POST', // тип запроса
 			success:function(data){
 				if( data ) { 
-					$('#true_loadmore button').text('Еще')
+					$('#true_loadmore button').text('Еще');
 					$('#posts-results').append(data); // вставляем новые посты
 					current_page++; // увеличиваем номер страницы на единицу
 					if (current_page == max_pages) $("#true_loadmore").remove(); // если последняя страница, удаляем кнопку
@@ -48,4 +48,26 @@ jQuery(function($){
 	// 		}
 	// 	});
 	// }, 500));
+
+	// сортировка постов
+	$('#posts-filter').on('change', '.sorting', function(){
+		//var url = document.location.href;
+		//var prmName = 'sort';
+		var val = $(this).val();
+		//var res = '';
+	
+		//$(this).text('Загрузка...'); // изменяем текст кнопки, вы также можете добавить прелоадер
+		var data = {
+			'action': 'posts-sort',
+			'sort' : val
+		};
+		$.ajax({
+			url:lookfortravel.ajaxurl, // обработчик
+			data:data, // данные
+			type:'GET', // тип запроса
+			success:function(data){
+				$('#search-posts-results').html(data); // вставляем новые посты
+			}
+		});
+	});
 });
