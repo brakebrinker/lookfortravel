@@ -7,7 +7,7 @@ jQuery(function($){
 			'page' : current_page
 		};
 		$.ajax({
-			url:ajaxurl, // обработчик
+			url:lookfortravel.ajaxurl, // обработчик
 			data:data, // данные
 			type:'POST', // тип запроса
 			success:function(data){
@@ -18,6 +18,30 @@ jQuery(function($){
 					if (current_page == max_pages) $("#true_loadmore").remove(); // если последняя страница, удаляем кнопку
 				} else {
 					$('#true_loadmore').remove(); // если мы дошли до последней страницы постов, скроем кнопку
+				}
+			}
+		});
+	});
+
+	$('.uk-container').on('click', '#true_loadmore_rate button', function(){
+		$(this).text('Загрузка...'); // изменяем текст кнопки, вы также можете добавить прелоадер
+		var data = {
+			'action': 'loadmore-rate',
+			'query': true_posts,
+			'page' : current_page
+		};
+		$.ajax({
+			url:lookfortravel.ajaxurl, // обработчик
+			data:data, // данные
+			type:'POST', // тип запроса
+			success:function(data){
+				if( data ) { 
+					$('#true_loadmore_rate button').text('Еще');
+					$('#posts-rate-results').append(data);
+					current_page++;
+					if (current_page == max_pages) $("#true_loadmore_rate").remove();
+				} else {
+					$('#true_loadmore_rate').remove();
 				}
 			}
 		});

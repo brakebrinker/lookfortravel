@@ -65,7 +65,7 @@ function get_post_blog_object_type($name_field) {
         <div> <img class=\"uk-margin-small-left\" src=\"$image_blog_object_img\" alt=\"the_title()\"> $image_blog_object_name</div>";
     }
 }
-//Button loadmore
+//Button loadmore posts\themes
 function true_load_posts(){
  
 	$args = unserialize( stripslashes( $_POST['query'] ) );
@@ -90,6 +90,30 @@ function true_load_posts(){
  
 add_action('wp_ajax_loadmore', 'true_load_posts');
 add_action('wp_ajax_nopriv_loadmore', 'true_load_posts');
+
+//Button loadmore ratings
+function true_load_rate_items(){
+ 
+	$args = unserialize( stripslashes( $_POST['query'] ) );
+	$args['paged'] = $_POST['page'] + 1;
+	$args['post_status'] = 'publish';
+ 
+	query_posts( $args );
+
+	if( have_posts() ) :
+ 
+		while( have_posts() ): the_post();
+
+            get_template_part( 'templates/rate-post', 'preview' );
+
+		endwhile;
+ 
+	endif;
+	die();
+}
+ 
+add_action('wp_ajax_loadmore-rate', 'true_load_rate_items');
+add_action('wp_ajax_nopriv_loadmore-rate', 'true_load_rate_items');
 
 // фильтрация постов пока не используется
 function filter_posts(){
@@ -234,4 +258,59 @@ function get_type_range_fuselage($field) {
     if ($field === 'localfar') {
         echo "Самолёт местных воздушных линий";
     }
+}
+
+// после редактирования поста
+add_action( 'save_post', 'when_update_post', 10, 2 );
+function when_update_post( $post_ID, $post, $update ){
+    if ( $parent_id = wp_is_post_revision( $post_ID ) ) 
+		$post_ID = $parent_id;
+
+    if ($update) {
+        // set_plane_rate_position($post_ID);
+        remove_action('save_post', 'when_update_post');
+
+		// обновляем пост, когда снова вызовется хук save_post
+		wp_update_post( array( 'ID' => $post_ID, 'post_status' => 'private' ) );
+
+		// снова вешаем хук
+		add_action('save_post', 'when_update_post');
+        // update_field('post_content', 'Здесь новый контент записи', $post_ID);
+    }
+}
+
+// подсчет места в рейтинге самолеты
+function set_plane_rate_position($post_ID) {
+    $args = array(
+        'post_type' => 'plane',
+        'publish' => true,
+        'numberposts' => -1,
+        'orderby' => 'meta_value_num',
+        'order' => 'DESC',
+        'meta_key' => 'position_rating'
+    );
+
+    $planes = get_posts($args);
+
+    $last_position_rating = 0;
+    $this_position_rating = (int) get_field('position_rating', $planes[0]->ID);
+    $last_position_rating = $this_position_rating;
+
+    foreach($planes as $post) { setup_postdata($post);
+        $position_rating = (int) get_field('position_rating', $post->ID);
+        $points_rating = (int) get_field('points_rating', $post->ID);
+        
+        //получаем последнее место, если текущее пустое
+        // if ($this_position_rating > $last_position_rating) {
+            
+        // }
+
+        if ($position_rating == 0 && $points_rating == 0) {
+            update_field('position_rating', ++$last_position_rating, $post->ID);
+        }
+    }
+
+    update_field('position_rating', ++$last_position_rating, 143);
+
+    wp_reset_postdata();
 }

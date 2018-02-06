@@ -43,9 +43,9 @@ $tag_img = get_field('taxonomy_term_img', $taxonomy . '_' . get_queried_object_i
 				</div>
 			</div>
 
-			<?php if (  $wp_query->max_num_pages > 1 ) : ?>
-				<?php get_template_part( 'templates/show', 'more' ); ?>
-			<?php endif; ?>
+				<?php if ( $wp_query->max_num_pages > 1 ) : ?>
+					<?php get_template_part( 'templates/show', 'more' ); ?>
+				<?php endif; ?>
 			<?php else: ?>
 			<div class="section-cards uk-section">
 				<div class="uk-child-width-1-2@s uk-child-width-1-3@l" uk-grid>
