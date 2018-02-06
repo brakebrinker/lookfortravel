@@ -1,24 +1,59 @@
 <?php get_header(); ?>
+<?php while ( have_posts() ) : the_post(); ?>
+<?php 
+$image = get_field('plane_img');
+$plane_images = get_field('plane_gallery');
+$advertising_block = get_field('advertising_block');
+
+$plane_count_of_passenger = get_field('plane_count_of_passenger');
+$plane_type_fuselage = get_field('plane_type_fuselage');
+$plane_type_range_flight = get_field('plane_type_range_flight');
+$plane_range_flight = get_field('plane_range_flight');
+$plane_length = get_field('plane_length');
+$plane_height = get_field('plane_height');
+$plane_first_flight = get_field('plane_first_flight');
+$plane_wingspan = get_field('plane_wingspan');
+$plane_wing_area = get_field('plane_wing_area');
+$plane_takeoff_weight = get_field('plane_takeoff_weight');
+$plane_landing_weight = get_field('plane_landing_weight');
+$plane_empty_weight = get_field('plane_empty_weight');
+$plane_max_weight_fuel = get_field('plane_max_weight_fuel');
+$plane_max_commercial_load = get_field('plane_max_commercial_load');
+$plane_fuel_tank_capacity = get_field('plane_fuel_tank_capacity');
+$plane_flight_range_with_max_loading = get_field('plane_flight_range_with_max_loading');
+$plane_max_cruising_speed = get_field('plane_max_cruising_speed');
+$plane_length_run = get_field('plane_length_run');
+$plane_engines = get_field('plane_engines');
+$plane_number_seats = get_field('plane_number_seats');
+$plane_number_seats_busines = get_field('plane_number_seats_busines');
+$plane_width_salon = get_field('plane_width_salon');
+$plane_number_seats = get_field('plane_number_seats');
+
+$points_rating = get_field('points_rating');
+$position_rating = get_field('position_rating');
+
+
+$post_type = get_post_type();
+?>
 <main class="section-main uk-section">
 	<div class="uk-container uk-margin-large-bottom">
 		<div class="uk-child-width-expand@m uk-text-center" uk-grid>
 			<div>
-				<div class="uk-h1 uk-margin-remove-bottom uk-text-primary">Узкофюзеляжный</div>
-				<div class="uk-text-large">Максимальная пассажировместимость — 289 человек</div>
+				<div class="uk-h1 uk-margin-remove-bottom uk-text-primary"><?php get_type_fuselage($plane_type_fuselage); ?></div>
+				<div class="uk-text-large">Максимальная пассажировместимость — <?php echo $plane_count_of_passenger; ?></div>
 			</div>
 			<div>
-				<div class="uk-h1 uk-margin-remove-bottom uk-text-primary">Ближнемагистральный</div>
-				<div class="uk-text-large">Максимальная дальность полета - 6230 км</div>
+				<div class="uk-h1 uk-margin-remove-bottom uk-text-primary"><?php get_type_range_fuselage($plane_type_range_flight); ?></div>
+				<div class="uk-text-large">Максимальная дальность полета - <?php echo $plane_range_flight; ?></div>
 			</div>
 			<div>
-				<div class="uk-h1 uk-margin-remove-bottom uk-text-primary">1997 г.</div>
+				<div class="uk-h1 uk-margin-remove-bottom uk-text-primary"><?php echo $plane_first_flight; ?></div>
 				<div class="uk-text-large">Первый полет</div>
 			</div>
 		</div>
 	</div>
 	<div class="uk-container uk-container-small" itemprop="description">
-		<p>Пассажирский самолет Boeing 737-800 (Боинг-737-800) является представителем поколения NG (Next Generation) семейства самолетов Боинг-737. Самолет разработан для замены модели 737-400 и отличается от последнего новым крылом, хвостовым оперением, цифровым кокпитом и более совершенными двигателями.</p>
-		<p>Boeing 737-800 эксплуатируется в авиакомпаниях с апреля 1998 г. и продолжает производиться серийно. При этом 737-800 является самой популярной моделью среди всех самолетов поколения NG.</p>
+		<?php the_content(); ?>
 	</div>
 </main>
 <div class="uk-section uk-section-muted">
@@ -30,38 +65,38 @@
 				<div class="uk-child-width-1-2" uk-grid>
 					<div>
 						<div>Длина</div>
-						<div class="uk-text-large">39.5 м</div>
+						<div class="uk-text-large"><?php echo $plane_length; ?></div>
 					</div>
 					<div>
 						<div>Высота</div>
-						<div class="uk-text-large">12.5 м</div>
+						<div class="uk-text-large"><?php echo $plane_height; ?></div>
 					</div>
 					<div>
-						<div>Длина</div>
-						<div class="uk-text-large">39.5 м</div>
+						<div>Размах крыльев</div>
+						<div class="uk-text-large"><?php echo $plane_wingspan; ?></div>
 					</div>
 					<div>
-						<div>Высота</div>
-						<div class="uk-text-large">12.5 м</div>
+						<div>Площадь крыла</div>
+						<div class="uk-text-large"><?php echo $plane_wing_area; ?></div>
 					</div>
 				</div>
 				<h3>Летные данные</h3>
 				<div class="uk-child-width-1-2" uk-grid>
 					<div>
 						<div>Дальность полета с макс. загрузкой</div>
-						<div class="uk-text-large">5 400 км</div>
+						<div class="uk-text-large"><?php echo $plane_flight_range_with_max_loading; ?></div>
 					</div>
 					<div>
 						<div>Макс. крейсерская скорость</div>
-						<div class="uk-text-large">850 км/ч</div>
+						<div class="uk-text-large"><?php echo $plane_max_cruising_speed; ?></div>
 					</div>
 					<div>
 						<div>Длина пробега</div>
-						<div class="uk-text-large">1 630 м</div>
+						<div class="uk-text-large"><?php echo $plane_length_run; ?></div>
 					</div>
 					<div>
 						<div>Двигатели</div>
-						<div class="uk-text-large">CFMI CFM56-7B24/26, 2 x 10980-11930 кгс</div>
+						<div class="uk-text-large"><?php echo $plane_engines; ?></div>
 					</div>
 				</div>
 			</div>
@@ -70,34 +105,34 @@
 				<div class="uk-child-width-1-2" uk-grid>
 					<div>
 						<div>Макс. взлетный вес</div>
-						<div class="uk-text-large">78 240 - 79 000 кг</div>
+						<div class="uk-text-large"><?php echo $plane_takeoff_weight; ?></div>
 					</div>
 					<div>
 						<div>Макс. посадочный вес</div>
-						<div class="uk-text-large">63 320 кг</div>
+						<div class="uk-text-large"><?php echo $plane_landing_weight; ?></div>
 					</div>
 					<div>
 						<div>Вес пустого</div>
-						<div class="uk-text-large">41 140 кг</div>
+						<div class="uk-text-large"><?php echo $plane_empty_weight; ?></div>
 					</div>
 					<div>
 						<div>Макс. вес без топлива</div>
-						<div class="uk-text-large">61 690 кг</div>
+						<div class="uk-text-large"><?php echo $plane_max_weight_fuel; ?></div>
 					</div>
 				</div>
 				<h3>Пассажирский салон</h3>
 				<div class="uk-child-width-1-2" uk-grid>
 					<div>
 						<div>Кол-во кресел (эконом)</div>
-						<div class="uk-text-large">189</div>
+						<div class="uk-text-large"><?php echo $plane_number_seats; ?></div>
 					</div>
 					<div>
 						<div>Кол-во кресел (эконом/бизнес)</div>
-						<div class="uk-text-large">160</div>
+						<div class="uk-text-large"><?php echo $plane_number_seats_busines; ?></div>
 					</div>
 					<div>
 						<div>Ширина салона</div>
-						<div class="uk-text-large">3.54 м</div>
+						<div class="uk-text-large"><?php echo $plane_width_salon; ?></div>
 					</div>
 				</div>
 			</div>
@@ -107,47 +142,18 @@
 <div class="uk-section">
 
 	<h2>Фото самолета</h2>
+	<?php if( $plane_images ): ?>
 	<div class="gallery" uk-lightbox>
-    	<a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-    		<img src="assets/images/sample/gallery/01_th.jpg" alt="название">
-    	</a>
-    	<a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-    		<img src="assets/images/sample/gallery/02_th.jpg" alt="название">
-    	</a>
-    	<a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-    		<img src="assets/images/sample/gallery/03_th.jpg" alt="название">
-    	</a>
-    	<a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-    		<img src="assets/images/sample/gallery/04_th.jpg" alt="название">
-    	</a>
-    	<a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-    		<img src="assets/images/sample/gallery/05_th.jpg" alt="название">
-    	</a>
-    	<a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-    		<img src="assets/images/sample/gallery/06_th.jpg" alt="название">
-    	</a>
-    	<a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-    		<img src="assets/images/sample/gallery/07_th.jpg" alt="название">
-    	</a>
-    	<a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-    		<img src="assets/images/sample/gallery/08_th.jpg" alt="название">
-    	</a>
-    	<a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-    		<img src="assets/images/sample/gallery/09_th.jpg" alt="название">
-    	</a>
-    	<a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-    		<img src="assets/images/sample/gallery/10_th.jpg" alt="название">
-    	</a>
-    	<a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-    		<img src="assets/images/sample/gallery/11_th.jpg" alt="название">
-    	</a>
-    	<a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-    		<img src="assets/images/sample/gallery/12_th.jpg" alt="название">
-    	</a>
+		<?php foreach( $plane_images as $plane_image ): ?>
+			<a href="<?php echo $plane_image['url']; ?>" data-caption="<?php if ($plane_image['caption']) echo $plane_image['caption']; else echo "Caption"; ?>">
+				<img src="<?php echo $plane_image['sizes']['medium_large']; ?>" alt="<?php if ($plane_image['alt']) echo $plane_image['alt']; else the_title(); ?>">
+			</a>
+		<?php endforeach; ?>
 	</div>
+	<?php endif; ?>
 
 	<div class="uk-container uk-container-small uk-margin-large">
-		<div class="uk-margin-large uk-placeholder">Реклама</div>
+		<div class="uk-margin-large uk-placeholder"><?php echo $advertising_block; ?></div>
 	</div>
 
 
@@ -162,19 +168,19 @@
 	
 </div>
 
-<header class="section-header uk-light" style="background-image: url(assets/images/sample/header-boeing.jpg)">
+<header class="section-header uk-light" style="background-image: url(<?php if( !empty($image) ) echo $image['url']; else echo get_template_directory_uri() . '/images/headers/regular.jpg'; ?>)">
 	<div class="uk-container uk-flex uk-flex-column">
         <?php get_template_part( 'templates/nav', 'top' ); ?>
 
 		<div class="middle uk-flex-1 uk-text-center">
 			<div class="badge">
-				<a class="uk-badge" href="">Рейтинг самолетов</a>
+				<a class="uk-badge" href="<?php echo get_post_type_archive_link( $post_type ); ?>">Рейтинг самолетов</a>
 			</div>
-			<h1 class="regular" itemprop="name">Boeing 737-800</h1>
+			<h1 class="regular" itemprop="name"><?php the_title(); ?></h1>
 		</div>
 		<div class="bottom uk-flex uk-flex-center">
 			<div class="rating uk-flex uk-flex-center uk-flex-middle uk-text-center" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
-				<span class="star default">8</span>
+				<span class="star default"><?php echo $position_rating; ?></span>
 				<div class="uk-margin-right">место в рейтинге <br>самолетов</div>
 				<button class="uk-button uk-button-link" uk-toggle="target: #modal-vote">Голосовать</button>
 
@@ -184,4 +190,5 @@
 		</div>
 	</div>
 </header>
+<?php endwhile; ?>
 <?php get_footer(); ?>

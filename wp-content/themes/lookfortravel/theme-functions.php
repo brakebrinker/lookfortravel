@@ -200,3 +200,38 @@ function sort_posts(){
  
 add_action('wp_ajax_posts-sort', 'sort_posts');
 add_action('wp_ajax_nopriv_posts-sort', 'sort_posts');
+
+// получение типа фюзеляжа самолета
+function get_type_fuselage($field) {
+    if ($field === 'uzko') {
+        echo "Узкофюзеляжный";
+    }
+    if ($field === 'shiroko') {
+        echo "Широкофюзеляжный";
+    }
+    if ($field === 'mono') {
+        echo "Однопалубный";
+    }
+    if ($field === 'two') {
+        echo "Двухпалубный";
+    }
+    if ($field === 'flat') {
+        echo "Плоскофюзеляжный";
+    }
+}
+
+// получение типа дальности самолета
+function get_type_range_fuselage($field) {
+    if ($field === 'far') {
+        echo "Дальнемагистральный";
+    }
+    if ($field === 'middlefar') {
+        echo "Среднемагистральный";
+    }
+    if ($field === 'closefar') {
+        echo "Ближнемагистральный";
+    }
+    if ($field === 'localfar') {
+        echo "Самолёт местных воздушных линий";
+    }
+}
