@@ -260,27 +260,24 @@ function get_type_range_fuselage($field) {
     }
 }
 
-// после редактирования поста
-add_action( 'save_post', 'when_update_post', 10, 2 );
-function when_update_post( $post_ID, $post, $update ){
-    if ( $parent_id = wp_is_post_revision( $post_ID ) ) 
-		$post_ID = $parent_id;
+// после редактирования поста самолета
+add_action( 'save_post_plane', 'when_update_post', 10, 2 );
+function when_update_post( $post_id ){
+    if ( $parent_id = wp_is_post_revision( $post_id ) ) 
+        $post_id = $parent_id;
 
-    if ($update) {
-        // set_plane_rate_position($post_ID);
-        remove_action('save_post', 'when_update_post');
+    // set_plane_rate_position($post_ID);
+    remove_action('save_post_plane', 'when_update_post');
 
-		// обновляем пост, когда снова вызовется хук save_post
-		wp_update_post( array( 'ID' => $post_ID, 'post_status' => 'private' ) );
+    // обновляем пост, когда снова вызовется хук save_post
+    set_plane_rate_position($post_id);
 
-		// снова вешаем хук
-		add_action('save_post', 'when_update_post');
-        // update_field('post_content', 'Здесь новый контент записи', $post_ID);
-    }
+    // снова вешаем хук
+    add_action('save_post_plane', 'when_update_post');
 }
 
 // подсчет места в рейтинге самолеты
-function set_plane_rate_position($post_ID) {
+function set_plane_rate_position($post_id) {
     $args = array(
         'post_type' => 'plane',
         'publish' => true,
@@ -293,24 +290,31 @@ function set_plane_rate_position($post_ID) {
     $planes = get_posts($args);
 
     $last_position_rating = 0;
+    //получаем последнее место
     $this_position_rating = (int) get_field('position_rating', $planes[0]->ID);
     $last_position_rating = $this_position_rating;
+    $this_position_rating = (int) get_field('position_rating', $post_id);
+    $this_points_rating = (int) get_field('points_rating', $post_id);    
 
     foreach($planes as $post) { setup_postdata($post);
         $position_rating = (int) get_field('position_rating', $post->ID);
         $points_rating = (int) get_field('points_rating', $post->ID);
-        
-        //получаем последнее место, если текущее пустое
-        // if ($this_position_rating > $last_position_rating) {
-            
-        // }
 
+        // update_field('position_rating', 0, $post->ID);
         if ($position_rating == 0 && $points_rating == 0) {
             update_field('position_rating', ++$last_position_rating, $post->ID);
         }
     }
-
-    update_field('position_rating', ++$last_position_rating, 143);
+        
+    // } else {
+    // if ($this_position_rating == 0 && $this_points_rating == 0) {
+    //     if ($last_position_rating >= $this_position_rating + 2) {
+    //         update_field('position_rating', $this_position_rating + 1, $post_id);
+    //     } else {
+    //         update_field('position_rating', $last_position_rating, $post_id);
+    //     }
+    // }
+    // }
 
     wp_reset_postdata();
 }
