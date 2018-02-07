@@ -318,3 +318,11 @@ function set_plane_rate_position($post_id) {
 
     wp_reset_postdata();
 }
+
+// получение класса для цвета позиции в рейтинге
+function get_color_of_position_rating($position) {
+    if ($position == 1) echo 'gold';
+    if ($position == 2) echo 'silver';
+    if ($position == 3) echo 'bronze';
+    if ($position > 3 || $position < 1) echo 'default';
+}
