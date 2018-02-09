@@ -23,6 +23,9 @@ iframe {
 .uk-container-small img {
     width: 100%;
 }
+.uk-container-small img.uk-border-circle.tm-bordered {
+    width: 200px;
+}
 .uk-container-small iframe {
     width: 100%;
     height: 400px;

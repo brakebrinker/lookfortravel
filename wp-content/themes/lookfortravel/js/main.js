@@ -47,6 +47,30 @@ jQuery(function($){
 		});
 	});
 
+	$('.uk-container').on('click', '#true_loadmore_rate_airports button', function(){
+		$(this).text('Загрузка...'); // изменяем текст кнопки, вы также можете добавить прелоадер
+		var data = {
+			'action': 'loadmore-rate-airports',
+			'query': true_posts,
+			'page' : current_page
+		};
+		$.ajax({
+			url:lookfortravel.ajaxurl, // обработчик
+			data:data, // данные
+			type:'POST', // тип запроса
+			success:function(data){
+				if( data ) { 
+					$('#true_loadmore_rate button').text('Еще');
+					$('#posts-rate-results').append(data);
+					current_page++;
+					if (current_page == max_pages) $("#true_loadmore_rate").remove();
+				} else {
+					$('#true_loadmore_rate').remove();
+				}
+			}
+		});
+	});
+
 	// !!!!!!!пока не используется -- поиск по публикациям 
 	// $('#posts-filter input[type="text"]').on('input keyup', _.debounce(function (){
 	// 	console.log('push');

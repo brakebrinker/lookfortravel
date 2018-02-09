@@ -115,6 +115,30 @@ function true_load_rate_items(){
 add_action('wp_ajax_loadmore-rate', 'true_load_rate_items');
 add_action('wp_ajax_nopriv_loadmore-rate', 'true_load_rate_items');
 
+//Button loadmore ratings aiports
+function true_load_rate_airports_items(){
+ 
+	$args = unserialize( stripslashes( $_POST['query'] ) );
+	$args['paged'] = $_POST['page'] + 1;
+	$args['post_status'] = 'publish';
+ 
+	query_posts( $args );
+
+	if( have_posts() ) :
+ 
+		while( have_posts() ): the_post();
+
+            get_template_part( 'templates/rate-post-airport', 'preview' );
+
+		endwhile;
+ 
+	endif;
+	die();
+}
+ 
+add_action('wp_ajax_loadmore-rate-airports', 'true_load_rate_airports_items');
+add_action('wp_ajax_nopriv_loadmore-rate-airports', 'true_load_rate_airports_items');
+
 // фильтрация постов пока не используется
 function filter_posts(){
     $s_query = trim(stripslashes( $_GET['search'] ));

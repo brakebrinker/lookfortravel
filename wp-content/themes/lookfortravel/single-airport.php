@@ -1,7 +1,17 @@
 <?php get_header(); ?>
 <?php while ( have_posts() ) : the_post(); ?>
 <?php 
+$image = get_field('airport_img');
+$airport_gallery = get_field('airport_gallery');
+$advertising_block = get_field('advertising_block');
 
+$airport_international_name = get_field('airport_international_name');
+$airport_class_descr = get_field('airport_class_descr');
+$airport_class = get_field('airport_class');
+$airport_code_iata = get_field('airport_code_iata');
+$airport_facilities = 'airport_facilities';
+$airport_city = get_field('airport_city');
+$airport_country = get_field('airport_country');
 
 $points_rating = get_field('points_rating');
 $position_rating = get_field('position_rating');
@@ -12,92 +22,50 @@ $post_type = get_post_type();
 	<div class="uk-container uk-margin-large-bottom">
 		<div class="uk-child-width-expand@m uk-text-center" uk-grid>
 			<div>
-				<div class="uk-h1 uk-margin-remove-bottom uk-text-primary">Agadir Al Massira Airport</div>
+				<div class="uk-h1 uk-margin-remove-bottom uk-text-primary"><?php echo $airport_international_name ?></div>
 				<div class="uk-text-large">Международное название</div>
 			</div>
 			<div>
-				<div class="uk-h1 uk-margin-remove-bottom uk-text-primary">II Класс</div>
-				<div class="uk-text-large">7000—4000 тысяч человек в год</div>
+				<div class="uk-h1 uk-margin-remove-bottom uk-text-primary"><?php echo $airport_class; ?></div>
+				<div class="uk-text-large"><?php echo $airport_class_descr; ?></div>
 			</div>
 			<div>
-				<div class="uk-h1 uk-margin-remove-bottom uk-text-primary">AGA</div>
+				<div class="uk-h1 uk-margin-remove-bottom uk-text-primary"><?php echo $airport_code_iata; ?></div>
 				<div class="uk-text-large">Международный код ИАТА</div>
 			</div>
 		</div>
 	</div>
 	<div class="uk-container uk-container-small" itemprop="description">
-		<p>Сейчас сложно поверить, что когда-то из этого аэропорта ежедневно отправлялось 10-12 рейсов. В «золотые годы» – 1980-е – самолеты из Бреста летали в Сочи, Самару, Екатеринбург, Минеральные Воды, Ростов-на-Дону, Астрахань и дальше. Дважды в день – в Москву и Гродно и, конечно, в Минск.</p>
-		<p>Возможности брестского аэропорта это позволяли и позволяют до сих пор: его пропускная способность – 400 человек в час. Открытый в 1976 году, в 1993 году брестский аэропорт получил статус международного и вместе с ним – возможность принимать суда весом до 191 тонны.</p>
-
+		<?php the_content(); ?>
+		<?php if( have_rows($airport_facilities) ): ?>
 		<h2>Удобства</h2>
 		<div class="uk-child-width-1-2@s uk-text-large" uk-grid>
+			<?php while( have_rows($airport_facilities) ): the_row(); 
+				$name = get_sub_field('name');
+			?>
 			<div>
-				<i class="fa fa-lg fa-check-square-o uk-margin-small-right"></i> Аренда автомобилей
+				<i class="fa fa-lg fa-check-square-o uk-margin-small-right"></i> <?php echo $name; ?>
 			</div>
-			<div>
-				<i class="fa fa-lg fa-check-square-o uk-margin-small-right"></i> WiFi
-			</div>
-			<div>
-				<i class="fa fa-lg fa-check-square-o uk-margin-small-right"></i> Обмен валюты и банкоматы
-			</div>
-			<div>
-				<i class="fa fa-lg fa-check-square-o uk-margin-small-right"></i> Душ
-			</div>
-			<div>
-				<i class="fa fa-lg fa-check-square-o uk-margin-small-right"></i> Кафе и рестораны
-			</div>
-			<div>
-				<i class="fa fa-lg fa-check-square-o uk-margin-small-right"></i> Детская площадка
-			</div>
+			<?php endwhile; ?>
 		</div>
-
+		<?php endif; ?>
 	</div>
 	<div class="uk-margin-large">
 		<h2>Фото аэропорта</h2>
+		<?php if( $airport_gallery ): ?>
 		<div class="gallery" uk-lightbox>
-	    	<a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-	    		<img src="assets/images/sample/gallery/01_th.jpg" alt="название">
-	    	</a>
-	    	<a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-	    		<img src="assets/images/sample/gallery/02_th.jpg" alt="название">
-	    	</a>
-	    	<a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-	    		<img src="assets/images/sample/gallery/03_th.jpg" alt="название">
-	    	</a>
-	    	<a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-	    		<img src="assets/images/sample/gallery/04_th.jpg" alt="название">
-	    	</a>
-	    	<a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-	    		<img src="assets/images/sample/gallery/05_th.jpg" alt="название">
-	    	</a>
-	    	<a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-	    		<img src="assets/images/sample/gallery/06_th.jpg" alt="название">
-	    	</a>
-	    	<a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-	    		<img src="assets/images/sample/gallery/07_th.jpg" alt="название">
-	    	</a>
-	    	<a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-	    		<img src="assets/images/sample/gallery/08_th.jpg" alt="название">
-	    	</a>
-	    	<a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-	    		<img src="assets/images/sample/gallery/09_th.jpg" alt="название">
-	    	</a>
-	    	<a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-	    		<img src="assets/images/sample/gallery/10_th.jpg" alt="название">
-	    	</a>
-	    	<a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-	    		<img src="assets/images/sample/gallery/11_th.jpg" alt="название">
-	    	</a>
-	    	<a href="assets/images/sample/gallery/01.jpg" data-caption="Caption">
-	    		<img src="assets/images/sample/gallery/12_th.jpg" alt="название">
-	    	</a>
+			<?php foreach( $airport_gallery as $airport_gallery ): ?>
+				<a href="<?php echo $airport_gallery['url']; ?>" data-caption="<?php if ($airport_gallery['caption']) echo $airport_gallery['caption']; else echo "Caption"; ?>">
+					<img src="<?php echo $airport_gallery['sizes']['medium_large']; ?>" alt="<?php if ($airport_gallery['alt']) echo $airport_gallery['alt']; else the_title(); ?>">
+				</a>
+			<?php endforeach; ?>
 		</div>
+		<?php endif; ?>
 	</div>
 
 	<div class="uk-container uk-container-small uk-margin-large">
-		<div class="uk-margin-large uk-placeholder">Реклама</div>
+		<div class="uk-margin-large uk-placeholder"><?php echo $advertising_block; ?></div>
 	</div>
-
 
 	<div class="uk-container uk-margin-large">
 		<div class="section-comments">
@@ -118,8 +86,8 @@ $post_type = get_post_type();
 			<div class="badge">
 				<a class="uk-badge" href="#">Рейтинг аэропортов</a>
 			</div>
-			<h1 class="regular" itemprop="name"><?php the_title(); ?></h1>
-			<p>Агадир, Марокко</p>
+			<h1 class="regular" itemprop="name"><?php echo 'Аэропорт ' . get_the_title(); ?></h1>
+			<p><?php echo $airport_city . ', ' . $airport_country; ?></p>
 		</div>
 		<div class="bottom uk-flex uk-flex-center">
 			<div class="rating uk-flex uk-flex-center uk-flex-middle uk-text-center" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
