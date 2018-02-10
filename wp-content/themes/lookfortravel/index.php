@@ -21,6 +21,18 @@ $blog_img = get_field('blog_page_img', get_queried_object_id());
 
 <main class="section-main">
 	<div class="uk-container uk-margin-small-top">
+	<?php 
+	$args = array(
+		'tax_query' => array(
+			array(
+				'taxonomy' => 'category',
+				'field' => 'slug',
+				'terms' => 'blog'
+			)
+		)
+	);
+	query_posts( $args );
+	?>
 		<?php if ( have_posts() ) : ?>
 		<div class="section-cards uk-section">
 			<div id="posts-results" class="uk-child-width-1-2@s uk-child-width-1-3@l" uk-grid>

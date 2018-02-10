@@ -30,7 +30,6 @@ $tag_img = get_field('taxonomy_term_img', $taxonomy . '_' . get_queried_object_i
 		<?php if ( have_posts() ) : ?>
 		<?php 
 		global $query_string;
-		echo $query_string . '&orderby=date&order=DESC';
 		query_posts($query_string . '&orderby=date&order=DESC'); 
 		?>
 		<div id="search-posts-results">
