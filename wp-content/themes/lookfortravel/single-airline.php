@@ -114,7 +114,7 @@ $post_type = get_post_type();
 		</div>
 		<div class="bottom uk-flex uk-flex-center">
 			<div class="rating uk-flex uk-flex-center uk-flex-middle uk-text-center" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
-				<span class="star default"><?php echo $position_rating; ?></span>
+				<span class="star <?php get_color_of_position_rating($position_rating); ?>"><?php echo $position_rating; ?></span>
 				<div class="uk-margin-right">место в рейтинге <br>авиакомпаний</div>
 				<button class="uk-button uk-button-link" uk-toggle="target: #modal-vote">Голосовать</button>
 

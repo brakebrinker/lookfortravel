@@ -8,6 +8,7 @@
     $blog_subcontent_video = get_field('blog_video_text');
     $blog_subcontent_photo = get_field('blog_photo_text');
     $blog_images = get_field('blog_photo_gallery');
+    $blog_place_on_map = get_field('blog_place_on_map');
 
     $related_tags = wp_get_object_terms( get_the_ID(), 'post_tag', array( 'fields' => 'ids' ) );
     $related_cats = array();
@@ -66,8 +67,11 @@
             <div class="uk-container uk-flex uk-flex-column">
                 <?php get_template_part( 'templates/nav', 'top' ); ?>
                 <div class="middle uk-flex-1 uk-text-center">
+                    
                     <div class="badge">
-                        <a class="uk-badge" href="<?php echo get_post_type_archive_link( $post_type ); ?>">Блог</a>
+                    <?php foreach($relatedd_cats as $r_cat) { ?>
+                        <a class="uk-badge" href="<?php echo get_term_link( $r_cat->term_id ); ?>">Блог</a>
+                    <?php } ?>
                     </div>
                     <h1 class="regular" itemprop="name"><?php the_title(); ?></h1>
                 </div>
@@ -75,7 +79,15 @@
                     <div class="meta uk-text-center"><span itemprop="author"><?php the_author(); ?></span>, <?php the_date(); ?></span></div>
                     <meta itemprop="datePublished" content="<?php echo get_the_date('Y-m-d'); ?>">
                     <div class="geo-tags uk-position-bottom-left uk-visible@m">
-                        <a class="uk-badge" href=""><i class="fa fa-map-marker uk-margin-small-right"></i> <span itemprop="contentLocation">Вьетнам, Аюттхая</span></a>
+                        <a class="uk-badge" href=""><i class="fa fa-map-marker uk-margin-small-right"></i> <span itemprop="contentLocation"><?php echo $blog_place_on_map; ?></span></a>
+                    </div>
+                    <div class="addons uk-width-1-3 uk-child-width-expand uk-text-small uk-text-center uk-position-bottom-right uk-visible@m" uk-grid>
+                        <div>
+                            <?php get_post_object_type($blog_object_type); ?>
+                        </div>
+                        <div>
+                            <?php get_post_recommendet($blog_status_recomendation); ?>
+                        </div>
                     </div>
                 </div>
             </div>
