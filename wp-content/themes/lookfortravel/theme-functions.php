@@ -181,60 +181,75 @@ function filter_posts(){
 add_action('wp_ajax_posts-search', 'filter_posts');
 add_action('wp_ajax_nopriv_posts-search', 'filter_posts');
 
-// фильтрация постов пока не используется
+// сортировка постов
 function sort_posts(){
     $sortkey = '';
-    $sortvalue = 'meta_value_num';
+    $sortvalue = '';
+    $order = 'DESC';
+    $taxonomy = '';
+    $termin = '';
 
     // $args = array();
     $argSort = array();
     // $args['meta_query'] = array('relation' => 'AND');
-    global $wp_query;
+
+    // global $wp_query;
+
     // global $query_string;
+    if (!empty($_GET['tax'])) {
+        $taxonomy = $_GET['tax'];
+    }
+
+    if (!empty($_GET['term'])) {
+        $termin = $_GET['term'];
+    }
 
     if (!empty($_GET['sort'])) {
-        if ($_GET['sort'] === 'sr_date') {
-            $sortvalue = 'date';
+        if ($_GET['sort'] === 'date') {
+            $sortkey = 'date';
         }
 
-        if ($_GET['sort'] === 'sr_alfb') {
-            $sortkey = 'company_term_do';
+        if ($_GET['sort'] === 'name') {
+            $sortkey = 'title';
+            $order = 'ASC';
         }
 
-        if ($_GET['sort'] === 'sr_rate') {
-            $sortkey = 'company_summ_do';
+        if ($_GET['sort'] === 'rate') {
+            $sortkey = 'meta_value_num';
+            $sortvalue = 'ratings_average';
         }
     }
 
     $argSort = array(
-        // 'post_type' => 'themes',
-        // 'post_status' => 'publish',
-        'meta_key' => $sortkey,
-        'orderby'  => $sortvalue,
-        'order'    => 'DESC'
+        'post_type' => 'post',
+        'post_status' => 'publish',
+        $taxonomy => $termin,
+        'meta_key' => $sortvalue,
+        'orderby'  => $sortkey,
+        'order'    => $order
     );
 
-    // $query = new WP_Query( $argSort );
-    // ob_start();
-    query_posts(array_merge($argSort,$wp_query->query));
+    $query = new WP_Query( $argSort );
+    ob_start();
+    // query_posts($query_string . '&orderby=title&order=DESC'); 
 
-    if ( have_posts() ) : ?>
+    if ( $query->have_posts() ) : ?>
     <div class="section-cards uk-section">
         <div id="posts-results" class="uk-child-width-1-2@s uk-child-width-1-3@l" uk-grid>
-        <?php while ( have_posts() ) : the_post(); 
+        <?php while ( $query->have_posts() ) : $query->the_post(); 
             get_template_part( 'templates/post', 'preview' );
         ?>
         <?php endwhile; ?>
         </div>
     </div>
-<!--     <?php if (  $query->max_num_pages > 1 ) : ?>
+    <?php if ( $query->max_num_pages > 1 ) : ?>
     <script>
         var true_posts = '<?php echo serialize($query->query_vars); ?>';
         var current_page = <?php echo (get_query_var('paged')) ? get_query_var('paged') : 1; ?>;
         var max_pages = '<?php echo $query->max_num_pages; ?>';
     </script>
     <div id="true_loadmore" class="uk-margin-large-bottom uk-text-center"><button class="uk-button uk-button-default">Еще</button></div>
-    <?php endif; ?> -->
+    <?php endif; ?>
     <?php else: ?>
     <div class="section-cards uk-section">
         <div class="uk-child-width-1-2@s uk-child-width-1-3@l" uk-grid>
@@ -349,4 +364,51 @@ function get_color_of_position_rating($position) {
     if ($position == 2) echo 'silver';
     if ($position == 3) echo 'bronze';
     if ($position > 3 || $position < 1) echo 'default';
+}
+
+//получение элементов для списка
+function get_options_in_select($elems) {
+    if( $elems && ! is_wp_error($elems) ){
+        foreach( $elems as $elems ){
+            $link = get_term_link($elems->term_id, $elems->taxonomy);
+            echo '<option value="' . $link . '">' . $elems->name . '</option>';
+        }
+    }
+}
+
+// получение стран из регионов (пока не используется)
+// function get_countries_in_regions($regions) {
+//     if (!empty($regions)) {
+//         $countries = array();
+
+//         foreach ($regions as $region) {
+//             $args = array(
+//                 'orderby' => 'name',
+//                 'hide_empty' => 0,
+//                 'hierarchical' => 0,
+//                 'parent' => $region,
+//             );
+//             $countries = array_merge(get_terms('location', $args),$countries);
+//         }
+//     }
+
+//     return $countries;
+// }
+
+// получение мест из постов для списков
+function get_places_from_posts_in_select($posts) {
+    if (!empty($posts)) {
+        $places = array();
+        foreach ($posts as $post_item) {
+            setup_postdata($post_item);
+            array_push($places, get_field('blog_place_on_map', $post_item->ID));
+        }
+        wp_reset_postdata();
+    }
+
+    if (!empty($places)) {
+        foreach( $places as $place ){
+            echo '<option value="' . $place . '">' . $place . '</option>';
+        }
+    }
 }

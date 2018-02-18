@@ -102,12 +102,16 @@ jQuery(function($){
 		//var url = document.location.href;
 		//var prmName = 'sort';
 		var val = $(this).val();
+		var tax = $(this).attr('data-tax');
+		var term = $(this).attr('data-term');
 		//var res = '';
 	
 		//$(this).text('Загрузка...'); // изменяем текст кнопки, вы также можете добавить прелоадер
 		var data = {
 			'action': 'posts-sort',
-			'sort' : val
+			'sort' : val,
+			'tax' : tax,
+			'term' : term,
 		};
 		$.ajax({
 			url:lookfortravel.ajaxurl, // обработчик
@@ -117,5 +121,29 @@ jQuery(function($){
 				$('#search-posts-results').html(data); // вставляем новые посты
 			}
 		});
+	});
+
+	// переход из фильтра в страны
+	$('#posts-filter').on('change', '.countries', function() {
+		var locate = $(this).val();
+		if (locate !== 'none') {
+			location.href = locate;
+		}
+	});
+
+	// переход из фильтра в темы
+	$('#posts-filter').on('change', '.themes', function() {
+		var locate = $(this).val();
+		if (locate !== 'none') {
+			location.href = locate;
+		}
+	});
+
+	// переход из фильтра в темы
+	$('#posts-filter').on('change', '.cities', function() {
+		var locate = $(this).val();
+		if (locate !== 'none') {
+			location.href = locate;
+		}
 	});
 });

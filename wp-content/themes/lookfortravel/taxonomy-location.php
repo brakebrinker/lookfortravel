@@ -7,6 +7,19 @@
     $blog_img = get_field('taxonomy_term_img', $taxonomy . '_' . get_queried_object_id());
     $position_rating = get_field('position_rating', $taxonomy . '_' . get_queried_object_id());
     $childrens = get_term_children( get_queried_object_id(), $taxonomy );
+
+    $themes = get_terms('category', 'orderby=name&hide_empty=0&exclude=1&hierarchical=false');
+    $regions = get_terms('location', 'orderby=name&hide_empty=0&hierarchical=0&fields=ids&parent=0');
+    $args = array(
+        'parent' => $queried_object->term_id,
+        'orderby' => 'name',
+        'order' => 'ASC',
+        // 'meta_key' => 'position_rating',
+        'hide_empty' => 0,
+        'hierarchical' => 0,
+    );
+    $countries = get_terms('location', $args);
+
 ?>
 <main class="section-main">
 	<div class="uk-container uk-margin-small-top">
@@ -15,21 +28,25 @@
             query_posts($query_string . '&orderby=date&order=DESC'); 
         ?>
         <?php if ( have_posts() ) : ?>
-        <?php if ($parent == 0) { ?>
-            <form class="section-filters uk-clearfix">
-                <select class="uk-select uk-form-width-medium">
-                    <option>Страны</option>
+        <?php if ($parent == 0) { 
+                //  $countries = get_countries_in_regions($regions); 
+            ?>
+            <form id="posts-filter" class="section-filters uk-clearfix">
+                <select class="uk-select uk-form-width-medium countries">
+                    <option value="none">Страны</option>
+                    <?php get_options_in_select($countries); ?>
                 </select>
-                <select class="uk-select uk-form-width-medium">
-                    <option>Темы</option>
+                <select class="uk-select uk-form-width-medium themes">
+                    <option value="none">Темы</option>
+                    <?php get_options_in_select($themes); ?>
                 </select>
-                <select class="uk-float-right uk-select uk-form-width-medium uk-visible@l">
-                    <option>Сортировка: по дате</option>
-                    <option>Сортировка: по алфавиту</option>
-                    <option>Сортировка: по рейтингу</option>
+                <select name="sort" class="uk-float-right uk-select uk-form-width-medium uk-visible@l sorting" data-tax="<?php echo $taxonomy; ?>" data-term="<?php echo $queried_object->slug; ?>">
+                    <option value="date">Сортировка: по дате</option>
+                    <option value="name">Сортировка: по алфавиту</option>
+                    <option value="rate">Сортировка: по рейтингу</option>
                 </select>
                 <div class="uk-hidden@l" uk-form-custom>
-                    <select>
+                    <select name="sort" class="sorting" data-tax="<?php echo $taxonomy; ?>" data-term="<?php echo $queried_object->slug; ?>">
                         <option>Сортировка: по дате</option>
                         <option>Сортировка: по алфавиту</option>
                         <option>Сортировка: по рейтингу</option>
@@ -38,21 +55,25 @@
                 </div>
             </form>
         <?php } ?>
-        <?php if (!empty($childrens) && $parent != 0) { ?>
+        <?php if (!empty($childrens) && $parent != 0) { 
+            $cities = get_terms('location', 'orderby=name&hide_empty=0&hierarchical=0&parent=' . $queried_object->term_id);
+        ?>
             <form class="section-filters uk-clearfix">
-                <select class="uk-select uk-form-width-medium">
-                    <option>Города</option>
+                <select class="uk-select uk-form-width-medium cities">
+                    <option value="none">Города</option>
+                    <?php get_options_in_select($cities); ?>
                 </select>
                 <select class="uk-select uk-form-width-medium">
                     <option>Темы</option>
+                    <?php get_options_in_select($themes); ?>
                 </select>
-                <select class="uk-float-right uk-select uk-form-width-medium uk-visible@l">
+                <select class="uk-float-right uk-select uk-form-width-medium uk-visible@l sorting" data-tax="<?php echo $taxonomy; ?>" data-term="<?php echo $queried_object->slug; ?>">
                     <option>Сортировка: по дате</option>
                     <option>Сортировка: по алфавиту</option>
                     <option>Сортировка: по рейтингу</option>
                 </select>
                 <div class="uk-hidden@l" uk-form-custom>
-                    <select>
+                    <select class="sorting" data-tax="<?php echo $taxonomy; ?>" data-term="<?php echo $queried_object->slug; ?>">
                         <option>Сортировка: по дате</option>
                         <option>Сортировка: по алфавиту</option>
                         <option>Сортировка: по рейтингу</option>
@@ -62,20 +83,24 @@
             </form>
         <?php } ?>
         <?php if (empty($childrens)) { ?>
+            <?php $post_items = get_posts(array('location' => $queried_object->slug)); 
+            ?>
             <form class="section-filters uk-clearfix">
                 <select class="uk-select uk-form-width-medium">
-                    <option>Места</option>
+                    <option value="none">Места</option>
+                    <?php get_places_from_posts_in_select($post_items); ?>
                 </select>
                 <select class="uk-select uk-form-width-medium">
                     <option>Темы</option>
+                    <?php get_options_in_select($themes); ?>
                 </select>
-                <select class="uk-float-right uk-select uk-form-width-medium uk-visible@l">
+                <select class="uk-float-right uk-select uk-form-width-medium uk-visible@l sorting" data-tax="<?php echo $taxonomy; ?>" data-term="<?php echo $queried_object->slug; ?>">
                     <option>Сортировка: по дате</option>
                     <option>Сортировка: по алфавиту</option>
                     <option>Сортировка: по рейтингу</option>
                 </select>
                 <div class="uk-hidden@l" uk-form-custom>
-                    <select>
+                    <select class="sorting" data-tax="<?php echo $taxonomy; ?>" data-term="<?php echo $queried_object->slug; ?>">
                         <option>Сортировка: по дате</option>
                         <option>Сортировка: по алфавиту</option>
                         <option>Сортировка: по рейтингу</option>
@@ -84,17 +109,19 @@
                 </div>
             </form>
         <?php } ?>
-		<div class="section-cards uk-section">
-			<div id="posts-results" class="uk-child-width-1-2@s uk-child-width-1-3@l" uk-grid>
-                <?php while ( have_posts() ) : the_post(); 
-                    get_template_part( 'templates/post', 'preview' );
-                ?>
-                <?php endwhile; ?>
-			</div>
-		</div>
-        <?php if (  $wp_query->max_num_pages > 1 ) : ?>
-			<?php get_template_part( 'templates/show', 'more' ); ?>
-        <?php endif; ?>
+        <div id="search-posts-results">
+            <div class="section-cards uk-section">
+                <div id="posts-results" class="uk-child-width-1-2@s uk-child-width-1-3@l" uk-grid>
+                    <?php while ( have_posts() ) : the_post(); 
+                        get_template_part( 'templates/post', 'preview' );
+                    ?>
+                    <?php endwhile; ?>
+                </div>
+            </div>
+            <?php if (  $wp_query->max_num_pages > 1 ) : ?>
+                <?php get_template_part( 'templates/show', 'more' ); ?>
+            <?php endif; ?>
+        </div>
         <?php else: ?>
         <div class="section-cards uk-section">
 			<div class="uk-child-width-1-2@s uk-child-width-1-3@l" uk-grid>
