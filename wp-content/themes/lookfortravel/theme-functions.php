@@ -139,6 +139,20 @@ function true_load_rate_airports_items(){
 add_action('wp_ajax_loadmore-rate-airports', 'true_load_rate_airports_items');
 add_action('wp_ajax_nopriv_loadmore-rate-airports', 'true_load_rate_airports_items');
 
+//Button loadmore search
+function true_load_search_posts(){
+ 
+    // $args = unserialize( stripslashes( $_POST['query'] ) );
+	// $args['paged'] = $_POST['page'] + 1; // следующая страница
+	// $args['post_status'] = 'publish';
+ 
+    echo 'Yeeeeeeaaaaaahhhhhh';
+	die();
+}
+ 
+add_action('wp_ajax_loadmore-search', 'true_load_search_posts');
+add_action('wp_ajax_nopriv_loadmore-search', 'true_load_search_posts');
+
 // фильтрация постов пока не используется
 function filter_posts(){
     $s_query = trim(stripslashes( $_GET['search'] ));
@@ -369,9 +383,18 @@ function get_color_of_position_rating($position) {
 //получение элементов для списка
 function get_options_in_select($elems) {
     if( $elems && ! is_wp_error($elems) ){
-        foreach( $elems as $elems ){
-            $link = get_term_link($elems->term_id, $elems->taxonomy);
-            echo '<option value="' . $link . '">' . $elems->name . '</option>';
+        foreach( $elems as $elem ){
+            $link = get_term_link($elem->term_id, $elem->taxonomy);
+            echo '<option value="' . $link . '">' . $elem->name . '</option>';
+        }
+    }
+}
+
+//получение элементов для списка
+function get_options_in_select_text($elems) {
+    if( $elems && ! is_wp_error($elems) ){
+        foreach( $elems as $elem ){
+            echo '<option value="' . $elem . '">' . $elem . '</option>';
         }
     }
 }

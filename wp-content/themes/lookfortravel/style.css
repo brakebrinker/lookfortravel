@@ -33,3 +33,11 @@ iframe {
 .vertical-scheme-block {
     text-align: center;
 }
+button.uk-form-icon-flip {
+    border: none;
+    background-color: transparent;
+}
+.search-result img {
+    width: auto;
+    height: 200px;
+}

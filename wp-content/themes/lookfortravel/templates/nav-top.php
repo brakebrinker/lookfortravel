@@ -49,296 +49,97 @@
             <a href="#">Направления
                 <i class="fa fa-caret-down"></i>
             </a>
+            <?php 
+                $regions_menu = get_terms('location', 'orderby=name&hide_empty=0&hierarchical=0&parent=0');
+            ?>
+            <?php if (!empty($regions_menu)) {?>
             <div uk-drop="offset: 0; mode: click">
                 <ul class="submenu-directions uk-list">
+                    <?php foreach($regions_menu as $region_menu) { 
+                        $countries_menu = get_terms('location', 'orderby=name&hide_empty=0&hierarchical=0&parent=' . $region_menu->term_id);
+                    ?>
                     <li>
-                        <a href="">Азия</a>
+                        <a href="<?php echo get_term_link($region_menu->term_id, $region_menu->taxonomy); ?>"><?php echo $region_menu->name; ?></a>
+                        <?php if (!empty($countries_menu)) { ?>
                         <ul class="sub" uk-drop="offset: 0;pos: right-top; mode: hover; boundary: .submenu-directions; boundary-align: true">
+                            <?php foreach ($countries_menu as $country_menu)  { 
+                                $position_rating = (int) get_field('position_rating', $country_menu->taxonomy . '_' . $country_menu->term_id);    
+                            ?>
                             <li>
-                                <a href="">
-                                    <span class="star star-mini gold">1</span>Китай</a>
+                                <a href="<?php echo get_term_link($country_menu->term_id, $country_menu->taxonomy); ?>"><span class="star star-mini <?php 
+get_color_of_position_rating($position_rating);
+?>"><?php echo $position_rating; ?></span><?php echo $country_menu->name; ?></a>
                             </li>
-                            <li>
-                                <a href="">
-                                    <span class="star star-mini silver">2</span>Индия</a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <span class="star star-mini bronze">3</span>Индонезия</a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <span class="star star-mini">4</span>Пакистан</a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <span class="star star-mini">5</span>Бангладеш</a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <span class="star star-mini">6</span>Япония</a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <span class="star star-mini">7</span>Филиппины</a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <span class="star star-mini">8</span>Вьетнам</a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <span class="star star-mini">9</span>Иран</a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <span class="star star-mini">10</span>Турция</a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <span class="star star-mini">11</span>Таиланд</a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <span class="star star-mini"></span> Остальные</a>
-                            </li>
+                            <?php } ?>
                         </ul>
+                        <?php } ?>
                     </li>
-                    <li>
-                        <a href="">Европа</a>
-                        <ul class="sub" uk-drop="offset: 0;pos: right-top; mode: hover; boundary: .submenu-directions; boundary-align: true">
-                            <li>
-                                <a href="">
-                                    <span class="star star-mini gold">1</span>Россия</a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <span class="star star-mini silver">2</span>Германия</a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <span class="star star-mini bronze">3</span>Великобритания</a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <span class="star star-mini">4</span>Франция</a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <span class="star star-mini">5</span>Италия</a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <span class="star star-mini">6</span>Италия</a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <span class="star star-mini">7</span>Италия</a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <span class="star star-mini">8</span>Италия</a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <span class="star star-mini">9</span>Италия</a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <span class="star star-mini">10</span>Италия</a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <span class="star star-mini">1</span>Италия</a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <span class="star star-mini"></span> Остальные</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="">Северная Америка</a>
-                    </li>
-                    <li>
-                        <a href="">Южная Америка</a>
-                    </li>
-                    <li>
-                        <a href="">Африка</a>
-                    </li>
-                    <li>
-                        <a href="">Океания</a>
-                    </li>
+                    <?php } ?>
                 </ul>
             </div>
+            <?php } ?>
         </li>
         <li>
             <a href="#">Темы
                 <i class="fa fa-caret-down"></i>
             </a>
             <div uk-drop="offset: 0; mode: click; boundary: .uk-subnav; boundary-align: true">
+                <?php 
+                    $themes_menu = get_terms('category', 'orderby=name&hide_empty=0&exclude=1&hierarchical=false');
+                ?>
                 <ul class="submenu-topics uk-list">
+                    <?php foreach ($themes_menu as $theme_menu) { 
+                        $posts_menu = get_posts(array(
+                            'numberposts' => 4,
+                            'category'    => $theme_menu->term_id
+                        ));    
+                    ?>
                     <li>
-                        <a href="">Маршруты</a>
-                        <div class="submenu-announces" uk-drop="offset: 10; mode: hover; boundary: .submenu-topics; boundary-align: true">
-                            <div class="uk-child-width-1-4 uk-grid-small" uk-grid>
-                                <div>
-                                    <a class="announce" itemscope itemtype="http://schema.org/BlogPosting">
-                                        <header class="uk-light uk-cover-container">
-                                            <img src="assets/images/sample/announce4.jpg" srcset="assets/images/sample/announce4@2x.jpg 2x" alt="название" uk-cover itemprop="image">
-                                            <div class="overlay uk-position-cover">
-                                                <div class="place uk-text-small" itemprop="contentLocation">Таиланд, Аюттхая</div>
-                                                <div class="title uk-h4" itemprop="name">Нячанг-Винперл-Далат-Муйне</div>
-                                                <time datetime="2017-11-16" class="uk-text-small">16 октября 2017</time>
-                                                <i class="type fa fa-file-text-o"></i>
-                                            </div>
-                                        </header>
-                                    </a>
-                                </div>
-                                <div>
-                                    <a class="announce" itemscope itemtype="http://schema.org/BlogPosting">
-                                        <header class="uk-light uk-cover-container">
-                                            <img src="assets/images/sample/announce3.jpg" srcset="assets/images/sample/announce3@2x.jpg 2x" alt="название" uk-cover itemprop="image">
-                                            <div class="overlay uk-position-cover">
-                                                <div class="place uk-text-small" itemprop="contentLocation">Таиланд, Аюттхая</div>
-                                                <div class="title uk-h4" itemprop="name">Разноцветный Бангкок</div>
-                                                <time datetime="2017-11-16" class="uk-text-small">16 октября 2017</time>
-                                                <i class="type fa fa-file-text-o"></i>
-                                            </div>
-                                        </header>
-                                    </a>
-                                </div>
-                                <div>
-                                    <a class="announce" itemscope itemtype="http://schema.org/BlogPosting">
-                                        <header class="uk-light uk-cover-container">
-                                            <img src="assets/images/sample/announce2.jpg" srcset="assets/images/sample/announce2@2x.jpg 2x" alt="название" uk-cover itemprop="image">
-                                            <div class="overlay uk-position-cover">
-                                                <div class="place uk-text-small" itemprop="contentLocation">Таиланд, Аюттхая</div>
-                                                <div class="title uk-h4" itemprop="name">Национальный парк Эраван</div>
-                                                <time datetime="2017-11-16" class="uk-text-small">16 октября 2017</time>
-                                                <i class="type fa fa-file-text-o"></i>
-                                            </div>
-                                        </header>
-                                    </a>
-                                </div>
-                                <div>
-                                    <a class="announce" itemscope itemtype="http://schema.org/BlogPosting">
-                                        <header class="uk-light uk-cover-container">
-                                            <img src="assets/images/sample/announce1.jpg" srcset="assets/images/sample/announce1@2x.jpg 2x" alt="название" uk-cover itemprop="image">
-                                            <div class="overlay uk-position-cover">
-                                                <div class="place uk-text-small" itemprop="contentLocation">Таиланд, Аюттхая</div>
-                                                <div class="title uk-h4" itemprop="name">Аюттхая — самый крупный город мира в XVIII столетии</div>
-                                                <time datetime="2017-11-16" class="uk-text-small">16 октября 2017</time>
-                                                <i class="type fa fa-file-text-o"></i>
-                                            </div>
-                                        </header>
-                                    </a>
+                        <a href="<?php echo get_term_link($theme_menu->term_id, $theme_menu->taxonomy); ?>"><?php echo $theme_menu->name; ?></a>
+                        <?php if (!empty($posts_menu)) { ?>
+                            <div class="submenu-announces" uk-drop="offset: 10; mode: hover; boundary: .submenu-topics; boundary-align: true">
+                                <div class="uk-child-width-1-4 uk-grid-small" uk-grid>
+                                <?php foreach($posts_menu as $post) { setup_postdata($post); ?>
+                                    <?php get_template_part( 'templates/menu-post', 'preview' ); ?>
+                                <?php }  
+                                wp_reset_postdata();
+                                ?>
                                 </div>
                             </div>
-                        </div>
+                        <?php } ?>
                     </li>
-                    <li>
-                        <a href="">Лайфхаки</a>
-                    </li>
-                    <li>
-                        <a href="">Эксперты</a>
-                    </li>
-                    <li>
-                        <a href="">Авторские туры</a>
-                    </li>
-                    <li>
-                        <a href="">Дороги</a>
-                    </li>
-                    <li>
-                        <a href="">Документы</a>
-                    </li>
-                    <li>
-                        <a href="">Бюджет</a>
-                    </li>
-                    <li>
-                        <a href="">С детьми</a>
-                    </li>
-                    <li>
-                        <a href="">Лечение</a>
-                    </li>
-                    <li>
-                        <a href="">Авиакомпании</a>
-                    </li>
-                    <li>
-                        <a href="">Самолеты</a>
-                    </li>
-                    <li>
-                        <a href="">Аэропорты</a>
-                    </li>
+                    <?php } ?>
                 </ul>
             </div>
         </li>
         <li>
-            <a href="#">Карта мира</a>
+            <a href="<?php echo get_permalink(214); ?>">Карта мира</a>
         </li>
         <li>
-            <a href="#">Блог авторов</a>
+            <a href="<?php echo get_term_link(1, 'category'); ?>">Блог авторов</a>
+            <?php
+                $posts_blog_menu = get_posts(array(
+                    'numberposts' => 4,
+                    'category'    => 1
+                ));    
+            ?>
+            <?php if (!empty($posts_blog_menu)) { ?>
             <div uk-drop="offset: 10; mode: hover; boundary: .uk-subnav; boundary-align: true; delay-show:100">
                 <div class="submenu-announces">
                     <div class="uk-child-width-1-4 uk-grid-small" uk-grid>
-                        <div>
-                            <a class="announce" itemscope itemtype="http://schema.org/BlogPosting">
-                                <header class="uk-light uk-cover-container">
-                                    <img src="assets/images/sample/announce4.jpg" srcset="assets/images/sample/announce4@2x.jpg 2x" alt="название" uk-cover itemprop="image">
-                                    <div class="overlay uk-position-cover">
-                                        <div class="place uk-text-small" itemprop="contentLocation">Таиланд, Аюттхая</div>
-                                        <div class="title uk-h4" itemprop="name">Нячанг-Винперл-Далат-Муйне</div>
-                                        <time datetime="2017-11-16" class="uk-text-small">16 октября 2017</time>
-                                        <i class="type fa fa-file-text-o"></i>
-                                    </div>
-                                </header>
-                            </a>
-                        </div>
-                        <div>
-                            <a class="announce" itemscope itemtype="http://schema.org/BlogPosting">
-                                <header class="uk-light uk-cover-container">
-                                    <img src="assets/images/sample/announce3.jpg" srcset="assets/images/sample/announce3@2x.jpg 2x" alt="название" uk-cover itemprop="image">
-                                    <div class="overlay uk-position-cover">
-                                        <div class="place uk-text-small" itemprop="contentLocation">Таиланд, Аюттхая</div>
-                                        <div class="title uk-h4" itemprop="name">Разноцветный Бангкок</div>
-                                        <time datetime="2017-11-16" class="uk-text-small">16 октября 2017</time>
-                                        <i class="type fa fa-file-text-o"></i>
-                                    </div>
-                                </header>
-                            </a>
-                        </div>
-                        <div>
-                            <a class="announce" itemscope itemtype="http://schema.org/BlogPosting">
-                                <header class="uk-light uk-cover-container">
-                                    <img src="assets/images/sample/announce2.jpg" srcset="assets/images/sample/announce2@2x.jpg 2x" alt="название" uk-cover itemprop="image">
-                                    <div class="overlay uk-position-cover">
-                                        <div class="place uk-text-small" itemprop="contentLocation">Таиланд, Аюттхая</div>
-                                        <div class="title uk-h4" itemprop="name">Национальный парк Эраван</div>
-                                        <time datetime="2017-11-16" class="uk-text-small">16 октября 2017</time>
-                                        <i class="type fa fa-file-text-o"></i>
-                                    </div>
-                                </header>
-                            </a>
-                        </div>
-                        <div>
-                            <a class="announce" itemscope itemtype="http://schema.org/BlogPosting">
-                                <header class="uk-light uk-cover-container">
-                                    <img src="assets/images/sample/announce1.jpg" srcset="assets/images/sample/announce1@2x.jpg 2x" alt="название" uk-cover itemprop="image">
-                                    <div class="overlay uk-position-cover">
-                                        <div class="place uk-text-small" itemprop="contentLocation">Таиланд, Аюттхая</div>
-                                        <div class="title uk-h4" itemprop="name">Аюттхая — самый крупный город мира в XVIII столетии</div>
-                                        <time datetime="2017-11-16" class="uk-text-small">16 октября 2017</time>
-                                        <i class="type fa fa-file-text-o"></i>
-                                    </div>
-                                </header>
-                            </a>
-                        </div>
+                        <?php foreach($posts_blog_menu as $post_blog_menu) { setup_postdata($post_blog_menu);
+                        ?>
+                            <?php get_template_part( 'templates/menu-post', 'preview' ); ?>
+                        <?php }  
+                        wp_reset_postdata();
+                        ?>
                     </div>
                 </div>
             </div>
+            <?php } ?>
         </li>
         <li>
-            <a href="#">О редакции</a>
+            <a href="<?php echo get_permalink(189); ?>">О редакции</a>
         </li>
     </ul>
 </nav>

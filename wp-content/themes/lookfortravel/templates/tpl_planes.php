@@ -6,9 +6,45 @@ Template Name: Шаблон рейтинга самолетов
 <?php get_header(); ?>
 <?php while ( have_posts() ) : the_post(); ?>
 <?php 
-    $image = get_field('rating_img'); 
+	$image = get_field('rating_img'); 
+	
+	$p_args = array(
+		'post_type'   => 'plane',
+	); 
+
+	$plane_items = get_posts($p_args);
+
+	$p_habarite = array();
+	$p_range_flight = array();
+	$p_manufacturer = array();
+	$p_feature = array();
+
+	foreach ($plane_items as $plane) {
+		$dimensions = get_field('plane_dimensions', $plane->ID);
+		$range_flight = get_field('plane_range_flight', $plane->ID);
+		$manufacturer = get_field('plane_manufacturer', $plane->ID);
+		$feature = get_field('plane_feature', $plane->ID);
+
+		if (array_search($dimensions, $p_habarite) === false) {
+			array_push($p_habarite, $dimensions);
+		}
+
+		if (array_search($range_flight, $p_range_flight) === false) {
+			array_push($p_range_flight, $range_flight);
+		}
+		
+		if (array_search($manufacturer, $p_manufacturer) === false) {
+			array_push($p_manufacturer, $manufacturer);
+		}
+		
+		if (array_search($feature, $p_feature) === false) {
+			array_push($p_feature, $feature);
+		}
+	}
+	wp_reset_postdata();
 ?>
 <main class="section-main">
+	<pre><?php// print_r($plane_items) ?></pre>
 	<div class="uk-container uk-margin-small-top uk-margin-large-bottom">
 		<form>
 			<div class="section-filters uk-clearfix uk-flex uk-flex-center">
@@ -21,29 +57,31 @@ Template Name: Шаблон рейтинга самолетов
 					</ul>
 				</div>
 				<select class="uk-select uk-form-width-small uk-visible@l">
-					<option>Габариты</option>
+					<option value="none">Габариты</option>
+					<?php get_options_in_select_text($p_habarite); ?>
 				</select>
 				<select class="uk-select uk-form-width-small uk-visible@l">
-					<option>Дальность полета</option>
+					<option value="none">Дальность полета</option>
+					<?php get_options_in_select_text($p_range_flight); ?>
 				</select>
 				<select class="uk-select uk-form-width-small uk-visible@l">
-					<option>Производитель</option>
+					<option value="none">Производитель</option>
+					<?php get_options_in_select_text($p_manufacturer); ?>
 				</select>
 				<select class="uk-select uk-form-width-small uk-visible@l">
-					<option>Особенности</option>
+					<option value="none">Особенности</option>
+					<?php get_options_in_select_text($p_feature); ?>
 				</select>
 				<div class="uk-text-center uk-hidden@l">
 					<button class="uk-button uk-button-small" uk-toggle="target: .mobile-filters; animation: uk-animation-fade">Фильтр</button>
 				</div>
 				<select class="uk-float-right uk-select uk-form-width-medium uk-visible@l">
 					<option>Сортировка: по рейтингу</option>
-					<option>Сортировка: по дате</option>
 					<option>Сортировка: по алфавиту</option>
 				</select>
 				<div class="uk-hidden@l" uk-form-custom>
 		            <select>
 						<option>Сортировка: по рейтингу</option>
-		                <option>Сортировка: по дате</option>
 						<option>Сортировка: по алфавиту</option>
 		            </select>
 		           <div class="mobile-sort"><i class="fa fa-sort-alpha-asc"></i></div>
